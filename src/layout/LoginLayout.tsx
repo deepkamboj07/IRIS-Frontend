@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import logoImage from '../assets/logo.png'
 import { Card } from "../Wrapper/Card";
 import { Spin } from "antd";
@@ -7,8 +7,9 @@ import { useAuthStore } from "../store/useAuthStore";
 const LoginLayout = () : JSX.Element => {
     const token = localStorage.getItem('token');
     const { loading } = useAuthStore();
+    const navigate = useNavigate();
     if (token) {
-        window.location.href = '/';
+        navigate('/profile', { replace: true });
         return <></>; // Prevents rendering the layout if already logged in
     }
      return (

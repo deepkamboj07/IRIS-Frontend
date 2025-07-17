@@ -4,12 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormSchema } from "../../../libs/schemas/loginSchema";
 import type z from "zod";
 import { Form } from "../../../components/UI/Form";
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { useAuthStore } from "../../../store/useAuthStore";
 
 const LoginPage = () => {
 
     const {login,loading} = useAuthStore();
+    const navigate = useNavigate();
 
     const form = useForm<z.infer<typeof loginFormSchema>>({
         resolver: zodResolver(loginFormSchema),
@@ -21,7 +22,10 @@ const LoginPage = () => {
     });
 
     const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
-        await login(data.email, data.password);
+        const res = await login(data.email, data.password);
+        if (res) {
+            navigate('/profile'); // Redirect to home page after successful login
+        }
     };
 
     return (

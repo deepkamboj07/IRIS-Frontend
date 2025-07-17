@@ -3,13 +3,12 @@ import { Layout } from "antd"
 import SideBar from "../components/Sidebar/SideBar"
 import useWindowSize from "../hooks/useWindowSize"
 import { Content } from "antd/es/layout/layout"
-import { Outlet, useLocation, useNavigate } from "react-router-dom"
+import { Outlet, useLocation } from "react-router-dom"
 import Navbar from "../components/Navbar/Navbar"
 import { useUIStore } from "../store/useUIStore"
 
 export const RootLayout = () => {
 
-    const navigate = useNavigate();
     const location = useLocation();
     const { width } = useWindowSize()
     const { openModal } = useUIStore();
@@ -36,10 +35,6 @@ export const RootLayout = () => {
 
   useEffect(() => {
     console.log("Location:", location);
-    if(location.pathname === "/")
-    {
-        navigate("/profile");
-    }
   }, [])
 
 
