@@ -47,6 +47,7 @@ const LoginPage = () => {
                         <InputFieldWithValidation
                             name="password"
                             displayLabel="Password"
+                            inputType="password"
                             placeholder="Enter your password"
                             type="input"
                             control={form.control}
