@@ -8,7 +8,7 @@ const LoginLayout = () : JSX.Element => {
     const token = localStorage.getItem('token');
     const { loading } = useAuthStore();
     if (token) {
-        window.location.href = '/profile';
+        window.location.href = '/';
         return <></>; // Prevents rendering the layout if already logged in
     }
      return (
