@@ -5,7 +5,7 @@ import axios, { type AxiosResponse, type ResponseType } from "axios";
 const testMode = import.meta.env.VITE_NEXT_TEST_MODE;
 
 
-const SERVICE_URL = "http://localhost:3000"; 
+const SERVICE_URL = "https://iris-backend-m9i0.onrender.com"; 
 
 
 const logout = ()=>{
