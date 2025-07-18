@@ -1,20 +1,14 @@
 import { useDroppable } from "@dnd-kit/core";
 import TaskCard from "./TaskCard";
-import TaskFooter from "./TaskFooter";
 import type React from "react";
+import type { TaskType } from "../../../store/useProjectStore";
 
-interface Task {
-  id: string;
-  title: string;
-  subtasks: { label: string; done: boolean }[];
-  dueDate?: string;
-}
 
 interface ColumnProps {
   id: string;
   title: string;
   color?: string;
-  tasks: Task[];
+  tasks: TaskType[];
 }
 
 const Column: React.FC<ColumnProps> = ({ id, title, color = "gray", tasks }) => {
@@ -40,11 +34,10 @@ const Column: React.FC<ColumnProps> = ({ id, title, color = "gray", tasks }) => 
 
       <div ref={setNodeRef} className="flex-1 space-y-3 min-h-[40px]">
         {tasks.map(task => (
-          <TaskCard key={task.id} {...task} />
+          <TaskCard key={task.id} task={task}  />
         ))}
       </div>
 
-      <TaskFooter />
     </div>
   );
 };

@@ -23,9 +23,6 @@ const SideBar: React.FC<SidebarProps> = ({collapsed }) => {
     return [];
   };
 
-  const logoutHandler = async () => {
-
-  };
 
     return (
         <div className="h-[100vh] overflow-hidden relative sidebar border-r border-gray-200">
@@ -71,14 +68,11 @@ const SideBar: React.FC<SidebarProps> = ({collapsed }) => {
                 }
                 onSelect={(item) => {
                     const path = item?.keyPath;
-                    if (item?.keyPath[1]) {
-                    navigate(`/${path[1]}/${path[0]}`);
-                    } else if (item?.keyPath[0]) {
-                    if (path[0] === "logout") {
-                        logoutHandler();
-                    } else {
+                    console.log("Selected path:", path);
+                    if (path.length > 0) {
                         navigate(`/${path[0]}`);
-                    }
+                    } else {
+                        navigate("/");
                     }
                 }}
                 />

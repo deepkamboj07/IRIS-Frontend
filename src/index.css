@@ -437,3 +437,11 @@ h3 {
 .custom-search-input::placeholder {
   color: black !important;
 }
+
+.ant-table {
+  border-radius: 12px !important;
+}
+.ant-table-thead > tr > th {
+  background: #f0f2f5 !important;
+  font-weight: 600 !important;
+}

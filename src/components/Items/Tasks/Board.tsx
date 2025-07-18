@@ -1,9 +1,10 @@
 import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import Column from "./Column";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useProjectStore, type TaskType } from "../../../store/useProjectStore";
 
 // Define valid column IDs as union
-type ColumnType = 'todo' | 'inProgress' | 'review' | 'completed';
+type ColumnType = 'todo' | 'inProgress' | 'inReview' | 'completed';
 
 interface Task {
   id: string;
@@ -16,43 +17,22 @@ type ColumnsState = {
   [key in ColumnType]: Task[];
 };
 
-const initialTasks: ColumnsState = {
-  todo: [
-    {
-      id: "t1",
-      title: "Complete Quarterly Report Draft",
-      subtasks: [],
-      dueDate: "17 Jun"
-    },
-    {
-      id: "t2",
-      title: "Learn Basic Spanish Phrases",
-      subtasks: [
-        { label: "Practice greetings and introductions", done: false },
-        { label: "Memorize 10 common verbs", done: false },
-        { label: "Watch a 10-minute YouTube lesson", done: false }
-      ],
-      dueDate: "17 Jun"
-    }
-  ],
-  inProgress: [
-    {
-      id: "t3",
-      title: "Start a Python Coding Project",
-      subtasks: [
-        { label: "Set up development environment", done: true },
-        { label: "Write pseudocode before coding", done: false },
-        { label: "Debug and test final program", done: false }
-      ],
-      dueDate: "17 Jun"
-    }
-  ],
-  review: [],
-  completed: []
-};
 
 const Board = () => {
-  const [columns, setColumns] = useState<ColumnsState>(initialTasks);
+
+  const { singleProject } = useProjectStore();
+
+  const [pendingTasks, setPendingTasks] = useState<TaskType[]>([]);
+  const [inProgressTasks, setInProgressTasks] = useState<TaskType[]>([]);
+  const [reviewTasks, setReviewTasks] = useState<TaskType[]>([]);
+  const [completedTasks, setCompletedTasks] = useState<TaskType[]>([]);
+
+  const [columns, setColumns] = useState<ColumnsState>({
+    todo: [],
+    inProgress: [],
+    inReview: [],
+    completed: []
+  });
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -79,13 +59,26 @@ const Board = () => {
     }));
   };
 
+  useEffect(() => {
+    if(!singleProject || !singleProject.tasks) return;
+    const pendingTasks = singleProject.tasks.filter(task => task.status === 'pending');
+    const inProgressTasks = singleProject.tasks.filter(task => task.status === 'inProgress');
+    const reviewTasks = singleProject.tasks.filter(task => task.status === 'inReview');
+    const completedTasks = singleProject.tasks.filter(task => task.status === 'completed');
+    console.log("Pending Tasks:", pendingTasks);
+    setPendingTasks(pendingTasks);
+    setInProgressTasks(inProgressTasks);
+    setReviewTasks(reviewTasks);
+    setCompletedTasks(completedTasks);
+  }, [singleProject]);
+
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div className="flex gap-4 overflow-auto p-4 h-[calc(100vh-80px)]">
-        <Column id="todo" title="Todo" color="blue" tasks={columns.todo} />
-        <Column id="inProgress" title="In Progress" color="purple" tasks={columns.inProgress} />
-        <Column id="review" title="In Review" color="yellow" tasks={columns.review} />
-        <Column id="completed" title="Completed" color="green" tasks={columns.completed} />
+        <Column id="todo" title="Todo" color="blue" tasks={pendingTasks} />
+        <Column id="inProgress" title="In Progress" color="purple" tasks={inProgressTasks} />
+        <Column id="review" title="In Review" color="yellow" tasks={reviewTasks} />
+        <Column id="completed" title="Completed" color="green" tasks={completedTasks} />
       </div>
     </DndContext>
   );

@@ -25,7 +25,9 @@ export const RootLayout = () => {
   const handleCreateClick = () => {
     if (location.pathname.includes('/profile')) {
         openModal('post')
-    } else if (location.pathname.includes('/tasks')) {
+    } else if (location.pathname.split('/').at(-1) === 'tasks') {
+        openModal('project')
+    } else if (location.pathname.split('/').at(-1) === 'projectTasks') {
         openModal('task')
     } else {
         openModal(null)
