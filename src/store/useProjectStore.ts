@@ -96,7 +96,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   addTaskToProject: async (projectId, task) => {
     set({ loading: true, error: null });
     try {
-      const res = await servicePatch(`/api/v1/projects/${projectId}/tasks`, task);
+      const res = await servicePost(`/api/v1/projects/${projectId}/tasks`, task);
       if(res.success){
         
          await get().fetchProjectById(projectId); // Refresh the single project
